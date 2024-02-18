@@ -24,12 +24,19 @@ def main():
             data, address = sock.recvfrom(ECHOMAX)
             print(f"Handling client at {address[0]} on port {address[1]}")
 
-            # Send the same message back to client
+            # Process message
+            process_datagram_packet(data)
+
+            # Send response back to client
             sock.sendto(data, address)
 
     except socket.error as e:
         print(f"Error: {e}")
         sys.exit(1)
+
+def process_datagram_packet(packet):
+    # OUR CODE WILL GO HERER
+    return packet
 
 if __name__ == "__main__":
     main()
