@@ -5,6 +5,6 @@ python UDPServer.py <PORT>
 
 TO RUN THE JAVA CLIENT:
 compile it, then run with the same PORT as the server
+SERVERNAME: IPAddress
 java UDPClientTimeout.java <SERVERNAME> <WORD> <PORT>
 
-I have no idea where the server name is coming from rn to be honest
