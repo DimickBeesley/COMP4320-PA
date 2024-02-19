@@ -1,3 +1,17 @@
+   -----------------------
+ /   WHAT NEEDS DOING   /
+-----------------------
+
+For me to make the server, I think the Client needs to get figured out
+Client needs:
+    - conversion from Friend files to MathOp files
+    - making sure they work at the base level
+
+
+  ------------------------
+ / HOW TO RUN THE STUFF /
+-----------------------
+
 TO RUN THE PYTHON SERVER:
 
 PORT: 10010 <= integer <= 10200
