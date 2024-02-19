@@ -21,14 +21,14 @@ public class MathOpDecoderBin implements MathOpDecoder {
   public MathOp decode(InputStream wire) throws IOException {
     DataInputStream src = new DataInputStream(wire);
     
-    int tml          = src.readInt();
-    int opCode       = src.readInt();
+    byte tml         = src.readByte();
+    byte opCode      = src.readByte();
     int operand1     = src.readInt();
     int operand2     = src.readInt();
-    int requestID    = src.readInt();
+    short requestID  = src.readShort();
     
     //Deal with the opName
-    int opNameLength = src.read(); // Returns an unsigned byte as an int
+    byte opNameLength = src.readByte(); // Returns an unsigned byte as an int
     if (opNameLength == -1)
       throw new EOFException();
     byte[] stringBuf = new byte[opNameLength];

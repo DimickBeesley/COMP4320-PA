@@ -6,17 +6,17 @@ package Assignment1;
 
 public class MathOp {
 
-    public int tml;            // total message length (bytes)
-    public int opCode;         // which math operation
+    public byte tml;            // total message length (bytes)
+    public byte opCode;         // which math operation
     public int operand1;
     public int operand2; 
-    public int requestID;
-    public int opNameLength;   // length in bytes of opName
+    public short requestID;
+    public byte opNameLength;   // length in bytes of opName
     public String opName;      // english word for the operation (e.g. division, addition...)
     
 
-  public MathOp(int tml, int opCode, int operand1, int operand2, 
-        int requestID, int opNameLength, String opName)  {
+  public MathOp(byte tml, byte opCode, int operand1, int operand2, 
+        short requestID, byte opNameLength, String opName)  {
       this.tml          = tml;
       this.opCode       = opCode;
       this.operand1     = operand1;
