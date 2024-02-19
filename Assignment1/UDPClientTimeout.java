@@ -13,6 +13,8 @@ public class UDPClientTimeout {
       throw new IllegalArgumentException("Parameter(s): <Server> <Word> [<Port>]");
 
     InetAddress serverAddress = InetAddress.getByName(args[0]);  // Server address
+    
+    //TODO: Change
     // Convert input String to bytes using the default character encoding
     byte[] bytesToSend = args[1].getBytes();
 
