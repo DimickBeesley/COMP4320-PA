@@ -13,7 +13,8 @@ public class UDPClientTimeout {
       throw new IllegalArgumentException("Parameter(s): <Server> <Word> [<Port>]");
 
     InetAddress serverAddress = InetAddress.getByName(args[0]);  // Server address
-    
+    long timeTaken = 0;
+
     //TODO: Change
     // Convert input String to bytes using the default character encoding
     byte[] bytesToSend = args[1].getBytes("UTF-16BE");
@@ -38,9 +39,13 @@ public class UDPClientTimeout {
     int tries = 0;      // Packets may be lost, so we have to keep trying
     boolean receivedResponse = false;
     do {
+      long beginTime = System.nanoTime();
       socket.send(sendPacket);          // Send the echo string
       try {
-        socket.receive(receivePacket);  // Attempt echo reply reception
+        socket.receive(receivePacket);
+        long endTime = System.nanoTime();
+        timeTaken = (endTime - beginTime);  
+        // Attempt echo reply reception
 
         if (!receivePacket.getAddress().equals(serverAddress))  // Check source
           throw new IOException("Received packet from an unknown source");
@@ -52,11 +57,13 @@ public class UDPClientTimeout {
       }
     } while ((!receivedResponse) && (tries < MAXTRIES));
 
-    if (receivedResponse)
+    if (receivedResponse) {
       System.out.println("Received: " + new String(receivePacket.getData()));
-    else
-      System.out.println("No response -- giving up.");
-
+      System.out.println("Time taken Round-Trip: " + timeTaken + "ns");
+    }
+    else {
+    System.out.println("No response -- giving up.");
+  }
     socket.close();
   }
 }
