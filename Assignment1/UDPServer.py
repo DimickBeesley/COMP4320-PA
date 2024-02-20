@@ -4,23 +4,6 @@ import struct
 
 ECHOMAX = 255  # Maximum size of echo datagram
 
-# Mathop class definition
-class MathOp():
-    
-    # Initialization of the MathOp class
-    def __init__(self, tml, op_code, op1, op2, requestID, op_name_length, op_name):
-    
-        if op_name > ECHOMAX:
-            print("Operation Name is too large")
-
-        self.tml = tml
-        self.op_code = op_code
-        self.op1 = op1
-        self.op2 = op2
-        self.requestID = requestID
-        self.op_name_length = op_name_length
-        self.op_name = op_name
-        return
 
 # Response class definition
 class Response():
@@ -36,18 +19,53 @@ class Response():
 
 
 def process_request(datagram_packet):
-    decode()
+    numbers, op_name = decode(datagram_packet)
 
-    out = encode(datagram_packet)
+    op_code =   numbers[1]
+    op1 =       numbers[2]
+    op2 =       numbers[3]
+
+    result = None
+
+    if op_code == 0:
+        result = op1 * op2
+    if op_code == 1:
+        result = op1 / op2
+    if op_code == 2:
+        result = op1 | op2
+    if op_code == 3:
+        result = op1 & op2
+    if op_code == 4:
+        result = op1 - op2
+    if op_code == 5:
+        result = op1 + op2
+
+    out = encode(result)
+
+    print(result)
+
     return out
 
 def decode(byte_array):
-    return
+    # all bytes before the string
+    non_string_portion = byte_array[0:14]
+    # length of the string
+    string_length = byte_array[14]
+    # portion at the end that is the size of the string (just the string)
+    string_portion = byte_array[string_length:]
+
+    # Define the format string for struct.unpack
+    format_string = '>BBiihB'  # '>' for big-endian, 'B' for byte, 'i' for integer, 'h' for short
+
+    # Unpack the byte array
+    decoded_data = struct.unpack(non_string_portion, byte_array)
+
+    return {"numbers": non_string_portion, "op-name": string_portion}
 
 def encode(packet):
     return packet
 
-'''
+
 def main():
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} <Port>")
@@ -67,26 +85,17 @@ def main():
         while True:
             # Receive message from client
             data, address = sock.recvfrom(ECHOMAX)
-            print(f"Handling client at {address[0]} on port {address[1]}")
+            print("Handling client at " + address[0] + " on port " + address[1])
 
             # Process message
-            process_datagram_packet(data)
+            response = decode(data)
 
             # Send response back to client
-            sock.sendto(data, address)
+            sock.sendto(response, address)
 
     except socket.error as e:
-        print(f"Error: {e}")
-        sys.exit(1)'''
-
-
-def main():
-    message = [(11), 2, 4, 240, 2, 1]
-    byte_message = b''.join(struct.pack('<i', i) for i in message)
-    utf16be = byte_message.decode('utf-16be')
-    back_to_array = utf16be.encode('utf-16be')
-
-    print(back_to_array)
+        print("Error: " + e)
+        sys.exit(1)
 
 
 
