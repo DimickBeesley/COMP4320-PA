@@ -16,7 +16,12 @@ public class UDPClientTimeout {
     
     //TODO: Change
     // Convert input String to bytes using the default character encoding
-    byte[] bytesToSend = args[1].getBytes();
+    byte[] bytesToSend = args[1].getBytes("UTF-16BE");
+
+
+    for (int i = 0; i < bytesToSend.length; i++) {
+      System.out.println(bytesToSend[i]);
+    }
 
     int servPort = (args.length == 3) ? Integer.parseInt(args[2]) : 7;
 
